@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacy Secure Billing</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f6f9;color:#172033}
+button,input,select{font:inherit}
+.hidden{display:none!important}
+.topbar{background:#fff;border-bottom:1px solid #d9dee5;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.topbar h1{margin:0;font-size:22px}.topbar small{color:#6b7280}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
+.primary{background:#0f62fe;color:#fff}.secondary{background:#e8eef7}.danger{background:#fee2e2;color:#991b1b}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-card{width:min(430px,100%);background:#fff;border:1px solid #d9dee5;border-radius:14px;padding:28px;box-shadow:0 12px 34px rgba(0,0,0,.08)}
+.login-card h2{margin:0 0 6px}.login-card p{color:#6b7280;margin:0 0 20px}
+.login-card label{display:block;font-weight:700;font-size:13px;margin-top:14px}
+.login-card input{width:100%;margin-top:6px;padding:11px 12px;border:1px solid #cfd6df;border-radius:8px}
+.login-card .btn{width:100%;margin-top:20px}
+.error{margin-top:12px;color:#b91c1c;font-weight:700;font-size:13px}
+.page{max-width:1400px;margin:20px auto 50px;padding:0 18px}
+.panel{background:#fff;border:1px solid #d9dee5;border-radius:12px;padding:16px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px}
+label{font-size:12px;font-weight:700;color:#455066}
+input,select{width:100%;margin-top:6px;padding:9px 10px;border:1px solid #cfd6df;border-radius:7px;background:#fff}
+.section-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.table-wrap{overflow:auto}.entry{width:100%;border-collapse:collapse;min-width:1120px}
+.entry th,.entry td{border-bottom:1px solid #e5e9ef;padding:6px 4px}.entry th{background:#f8fafc;font-size:11px;text-align:left}
+.entry input{margin:0;padding:7px;min-width:72px}.entry .name{min-width:180px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.summary div{background:#fff;border:1px solid #d9dee5;border-radius:10px;padding:12px}
+.summary span{display:block;color:#6b7280;font-size:12px}.summary strong{display:block;margin-top:4px;font-size:20px}
+
+.receipt{background:#fff;border:1px solid #222;color:#111;font-size:11px}
+.receipt-top{display:grid;grid-template-columns:49% 51%;border-bottom:1px solid #222}
+.brand{min-height:90px;display:grid;grid-template-columns:145px 1fr;align-items:center;border-right:1px solid #222}
+.logo-wrap{display:grid;place-items:center}
+.pharmacy-logo{width:108px;height:72px;object-fit:contain;display:block;margin:0 auto}
+.brand-copy{text-align:center;line-height:1.55}.brand-name{font-size:16px;font-weight:800}.receipt-title{font-size:15px;font-weight:800}
+.receipt-info{padding:7px 10px;display:grid;align-content:center;gap:5px}
+.receipt-info div{display:grid;grid-template-columns:85px 10px 1fr;font-size:12px}
+.receipt table{border-collapse:collapse;width:100%}
+.receipt-items th{background:#bdebea;border-bottom:1px solid #222;padding:4px 3px;font-size:10px;white-space:nowrap}
+.receipt-items td{padding:4px 3px;font-size:10px;text-align:right;white-space:nowrap}
+.receipt-items td:nth-child(2),.receipt-items td:nth-child(4),.receipt-items td:nth-child(5),.receipt-items td:nth-child(6),.receipt-items td:nth-child(7){text-align:left}
+.amount-words{border-top:1px solid #222;border-bottom:1px solid #222;padding:4px 6px}
+.gst-area{display:grid;grid-template-columns:75% 25%;border-bottom:1px solid #222}
+.gst-left{padding:4px 8px 6px}.gst-title{font-weight:800;text-decoration:underline;font-size:13px;margin-bottom:3px}
+.gst-left table{width:75%;margin-left:35px}.gst-left th,.gst-left td{border:1px solid #444;padding:2px 4px;text-align:right}
+.totals{background:#f8bec8;padding:6px 12px}.totals div{display:grid;grid-template-columns:1fr 72px;gap:6px;line-height:1.7}.totals span{text-align:right;font-weight:700}.totals b{text-align:right}
+.payment{width:63%!important;border-right:1px solid #222}.payment th{color:#102ba4;text-align:left;padding:3px 6px}.payment td{padding:3px 6px}
+.license{display:grid;grid-template-columns:1fr 1.1fr .8fr;border-top:1px solid #222;border-bottom:1px solid #222}.license div{padding:4px 7px;font-weight:700}
+.instructions{padding:5px 7px;border-bottom:1px solid #222}.footer-grid{display:grid;grid-template-columns:1fr 1fr;padding:7px;min-height:105px;line-height:1.9}
+.footer-grid .right{
+  text-align:right;
+  position:relative;
+}
+.pharmacist{
+  position:absolute;
+  top:82px;
+  right:11%;
+  left:auto;
+  width:120px;
+  margin:0;
+  text-align:center;
+  font-size:13px;
+  font-weight:800;
+}
+.notes{padding:5px 7px 9px}.notes b{font-size:13px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:repeat(2,1fr)}}
+@page{size:A4 landscape;margin:6mm}
+@media print{
+  html,body{
+    width:100%;
+    margin:0;
+    padding:0;
+    background:#fff;
+  }
+  .no-print{display:none!important}
+  .page{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding:0;
+  }
+  .receipt{
+    width:100%;
+    margin:0;
+    border:1px solid #222;
+    font-size:11px;
+  }
+
+  /* Keep print proportions close to the original hospital receipt */
+  .receipt-top{
+    grid-template-columns:49% 51%;
+  }
+  .brand{
+    min-height:86px;
+    grid-template-columns:145px 1fr;
+  }
+  .logo{
+    width:112px;
+    height:auto;
+  }
+  .brand-name{font-size:16px}
+  .receipt-title{font-size:15px}
+  .receipt-info > div{font-size:12px}
+
+  .receipt-items th{
+    font-size:10px;
+    padding:4px 3px;
+  }
+  .receipt-items td{
+    font-size:10px;
+    padding:4px 3px;
+  }
+
+  .amount-words{padding:4px 6px}
+  .gst-title{font-size:13px}
+  .gst-left th,.gst-left td{padding:2px 4px}
+  .payment th,.payment td{padding:3px 6px}
+  .license div{padding:4px 7px}
+  .instructions{padding:5px 7px}
+
+  /* Match the reference's large lower section */
+  .footer-grid{
+    min-height:150px;
+    position:relative;
+  }
+  .footer-grid .right{
+    position:static;
+    text-align:right;
+  }
+
+  /* Reference placement: lower-right under Create/Print dates */
+  .pharmacist{
+    position:absolute;
+    top:88px;
+    right:9%;
+    left:auto;
+    width:120px;
+    margin:0;
+    text-align:center;
+    font-size:13px;
+    font-weight:800;
+  }
+
+  .notes{
+    padding:5px 7px 9px;
+    font-size:11px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login-wrap">
+  <div class="login-card">
+    <h2>Pharmacy Login</h2>
+    <p>Enter username, password and access code.</p>
+    <form id="loginForm">
+      <label>Username
+        <input id="loginUser" autocomplete="username" required>
+      </label>
+      <label>Password
+        <input id="loginPass" type="password" autocomplete="current-password" required>
+      </label>
+      <label>Security Code
+        <input id="loginCode" type="password" inputmode="numeric" required>
+      </label>
+      <button class="btn primary" type="submit">Login</button>
+      <div id="loginError" class="error"></div>
+    </form>
+  </div>
+</div>
+
+<div id="appView" class="hidden">
+  <header class="topbar no-print">
+    <div>
+      <h1>Casualty Pharmacy Billing</h1>
+      <small>Secure HTML demo session</small>
+    </div>
+    <div>
+      <button id="printBtn" class="btn primary">Print Bill</button>
+      <button id="logoutBtn" class="btn secondary">Logout</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="panel no-print">
+      <div class="grid">
+        <label>Bill No.<input id="billNo" value="CPOPB26003212"></label>
+        <label>Bill Date<input id="billDate" type="datetime-local"></label>
+        <label>Print Date<input id="printDate" type="datetime-local"></label>
+        <label>Patient Name<input id="patientName" value="MAMTA CHANDRAVANSHI"></label>
+        <label>Doctor Name<input id="doctorName"></label>
+        <label>Created By<input id="createdBy" value="912980"></label>
+        <label>Print By<input id="printBy" value="913175"></label>
+        <label>Payment Mode<select id="payMode"><option>Cash</option><option>UPI</option><option>Card</option></select></label>
+        <label>Concession<input id="concession" type="number" step="0.01" min="0" value="5.00"></label>
+      </div>
+    </section>
+
+    <section class="panel no-print">
+      <div class="section-row">
+        <h3 style="margin:0">Medicine Items</h3>
+        <button id="addItemBtn" class="btn secondary">+ Add Medicine</button>
+      </div>
+      <div class="table-wrap">
+        <table class="entry">
+          <thead><tr>
+            <th>Item</th><th>HSN</th><th>Manf</th><th>Sh</th><th>Batch</th><th>Expiry</th><th>Qty</th><th>Rate</th><th>MRP</th><th>Disc</th><th>GST %</th><th></th>
+          </tr></thead>
+          <tbody id="entryBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="summary no-print">
+      <div><span>Taxable</span><strong id="sumTaxable">₹0.00</strong></div>
+      <div><span>CGST</span><strong id="sumCgst">₹0.00</strong></div>
+      <div><span>SGST</span><strong id="sumSgst">₹0.00</strong></div>
+      <div><span>Net Amount</span><strong id="sumNet">₹0.00</strong></div>
+    </section>
+
+    <section class="receipt">
+      <div class="receipt-top">
+        <div class="brand">
+          <div class="logo-wrap">
+            <img src="logo.png" class="pharmacy-logo" alt="Pharmacy Logo">
+          </div>
+          <div class="brand-copy">
+            <div class="brand-name">CASUALTY PHARMACY</div>
+            <div>Junwani Road, Bhilai, Durg, Chhattisgarh - 490020</div>
+            <div class="receipt-title">Pharmacy Receipt</div>
+          </div>
+        </div>
+        <div class="receipt-info">
+          <div><b>Bill#</b><span>:</span><strong id="rBillNo"></strong></div>
+          <div><b>Bill Dt</b><span>:</span><span id="rBillDate"></span></div>
+          <div><b>Pat Name</b><span>:</span><span id="rPatient"></span></div>
+          <div><b>Dr. Name</b><span>:</span><span id="rDoctor"></span></div>
+          <div><b>Print Dt</b><span>:</span><span id="rPrintTop"></span></div>
+        </div>
+      </div>
+
+      <table class="receipt-items">
+        <thead><tr>
+          <th>S No</th><th>Item Name</th><th>HSN Code</th><th>Manf</th><th>Sh</th><th>Batch#</th><th>Exp Dt</th><th>Qty</th><th>Rate</th><th>M.R.P</th><th>Disc</th><th>Taxable</th><th>CGST %</th><th>CGST Amt</th><th>SGST %</th><th>SGST Amt</th><th>Bill Amt</th>
+        </tr></thead>
+        <tbody id="receiptBody"></tbody>
+      </table>
+
+      <div class="amount-words" id="amountWords"></div>
+
+      <div class="gst-area">
+        <div class="gst-left">
+          <div class="gst-title">GST Details</div>
+          <table>
+            <thead>
+              <tr><th rowspan="2">S No</th><th rowspan="2">Taxble Amt</th><th colspan="2">CGST</th><th colspan="2">SGST</th><th rowspan="2">Total Bill</th></tr>
+              <tr><th>%</th><th>Amt</th><th>%</th><th>Amt</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td id="gTaxable">0.00</td><td id="gCgstPct">0.00</td><td id="gCgstAmt">0.00</td><td id="gSgstPct">0.00</td><td id="gSgstAmt">0.00</td><td id="gTotal">0.00</td></tr>
+              <tr><td></td><td><b id="gTaxableTotal">0.00</b></td><td></td><td><b id="gCgstTotal">0.00</b></td><td></td><td><b id="gSgstTotal">0.00</b></td><td><b id="gGrandTotal">0.00</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="totals">
+          <div><span>Roundoff Amount :</span><b id="rRoundoff">0.00</b></div>
+          <div><span>Concession :</span><b id="rConcession">0.00</b></div>
+          <div><span>Net Amount :</span><b id="rNet">0.00</b></div>
+          <div><span>Receipt Amount :</span><b id="rReceipt">0.00</b></div>
+        </div>
+      </div>
+
+      <table class="payment">
+        <thead><tr><th>Pay Mode</th><th>Amount</th><th>Card#</th><th>Bank Name</th><th>Exp Dt</th></tr></thead>
+        <tbody><tr><td id="rPayMode"></td><td id="rPayAmount"></td><td></td><td></td><td></td></tr></tbody>
+      </table>
+
+      <div class="license">
+        <div>GST# : 22AEPPP1538K1Z9</div>
+        <div>D.L# : CG-DZ2-47509/10/11/12</div>
+        <div>CIN# :</div>
+      </div>
+      <div class="instructions"><b>Instructions</b> &nbsp;: 0</div>
+      <div class="footer-grid">
+        <div><div>Create By : <span id="rCreatedBy"></span></div><div>Print By : <span id="rPrintBy"></span></div></div>
+        <div class="right"><div>Create Dt : <span id="rCreateDate"></span></div><div>Print Dt : <span id="rPrintDate"></span></div><div class="pharmacist">Pharmacist</div></div>
+      </div>
+      <div class="notes"><b>Note :</b> 1. Item Once Sold Can Returned Within 7 Days Only (Bill Is Mandatory)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. No Refund For Loose Strips.</div>
+    </section>
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

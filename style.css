@@ -1,0 +1,234 @@
+
+* { box-sizing: border-box; }
+:root {
+  --bg:#f4f6f8;
+  --card:#fff;
+  --line:#d9dee5;
+  --ink:#172033;
+  --muted:#687386;
+  --primary:#0f62fe;
+}
+body {
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+.app-header {
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:18px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.app-header h1 { margin:0; font-size:24px; }
+.app-header p { margin:4px 0 0; color:var(--muted); }
+.header-actions,.section-row { display:flex; gap:10px; align-items:center; }
+button {
+  border:0; border-radius:8px; padding:10px 16px; font-weight:700; cursor:pointer;
+}
+button.primary { background:var(--primary); color:#fff; }
+button.secondary { background:#eaf0f8; color:#1b2b42; }
+button.danger { background:#fee2e2; color:#991b1b; padding:7px 10px; }
+.page { max-width:1400px; margin:22px auto 50px; padding:0 20px; }
+.panel {
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:18px;
+}
+.panel h2 { margin:0 0 14px; font-size:18px; }
+.section-row { justify-content:space-between; margin-bottom:12px; }
+.section-row h2 { margin:0; }
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(180px,1fr));
+  gap:14px;
+}
+label { font-size:12px; font-weight:700; color:#455066; }
+input,select {
+  width:100%; margin-top:6px; padding:10px 11px;
+  border:1px solid #cfd6df; border-radius:7px; background:#fff;
+}
+.table-wrap { overflow:auto; }
+.entry-table { width:100%; border-collapse:collapse; min-width:1150px; }
+.entry-table th,.entry-table td { border-bottom:1px solid #e5e9ef; padding:7px 5px; }
+.entry-table th { font-size:11px; text-align:left; background:#f8fafc; }
+.entry-table input { margin:0; padding:7px; min-width:75px; }
+.entry-table .name { min-width:170px; }
+.summary-cards {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px;
+}
+.summary-cards > div {
+  background:white; border:1px solid var(--line); border-radius:10px; padding:14px 16px;
+}
+.summary-cards span { display:block; color:var(--muted); font-size:12px; }
+.summary-cards strong { display:block; margin-top:5px; font-size:20px; }
+
+.receipt {
+  background:#fff;
+  border:1px solid #222;
+  border-top:0;
+  color:#111;
+  font-size:11px;
+}
+.receipt-top { display:grid; grid-template-columns:49% 51%; border-bottom:1px solid #222; }
+.brand {
+  min-height:82px;
+  display:grid;
+  grid-template-columns:135px 1fr;
+  align-items:center;
+  border-right:1px solid #222;
+}
+.pharmacy-logo {
+  width:108px;
+  height:72px;
+  object-fit:contain;
+  display:block;
+}
+.brand-copy { text-align:center; line-height:1.6; }
+.brand-name { font-weight:800; font-size:16px; }
+.receipt-title { font-weight:800; font-size:15px; }
+.receipt-info { padding:7px 10px; display:grid; align-content:center; gap:5px; }
+.receipt-info > div { display:grid; grid-template-columns:80px 10px 1fr; font-size:12px; }
+
+.receipt-table-wrap { overflow:hidden; }
+.receipt-items { width:100%; border-collapse:collapse; table-layout:auto; }
+.receipt-items th {
+  background:#bdebea; border-bottom:1px solid #222; padding:4px 3px;
+  font-size:10px; white-space:nowrap;
+}
+.receipt-items td { padding:4px 3px; font-size:10px; text-align:right; white-space:nowrap; }
+.receipt-items td:nth-child(2),.receipt-items td:nth-child(4),.receipt-items td:nth-child(5),
+.receipt-items td:nth-child(6),.receipt-items td:nth-child(7) { text-align:left; }
+
+.amount-words { border-top:1px solid #222; border-bottom:1px solid #222; padding:4px 6px; }
+.gst-total-area { display:grid; grid-template-columns:75% 25%; border-bottom:1px solid #222; }
+.gst-details { padding:4px 8px 6px; }
+.gst-title { font-weight:800; text-decoration:underline; font-size:13px; margin-bottom:3px; margin-right: 70px }
+.gst-details table { width:75%; margin-left:35px; border-collapse:collapse; }
+.gst-details th,.gst-details td { border:1px solid #444; padding:2px 4px; text-align:right; }
+.totals-box { background:#f8bec8; padding:6px 12px; }
+.totals-box div { display:grid; grid-template-columns:1fr 72px; gap:6px; line-height:1.7; }
+.totals-box span { text-align:right; font-weight:700; }
+.totals-box b { text-align:right; }
+
+.payment-table { width:63%; border-collapse:collapse; border-right:1px solid #222; }
+.payment-table th { color:#102ba4; text-align:left; padding:3px 6px; }
+.payment-table td { padding:3px 6px; }
+.license-row {
+  display:grid; grid-template-columns:1fr 1.1fr .8fr;
+  border-top:1px solid #222; border-bottom:1px solid #222;
+}
+.license-row div { padding:4px 7px; }
+.instructions { padding:5px 7px; border-bottom:1px solid #222; }
+.footer-grid { display:grid; grid-template-columns:1fr 1fr; padding:7px; min-height:105px; line-height:1.9; }
+.footer-grid .right { text-align:right; }
+.pharmacist { text-align:center; margin-top:18px; font-size:13px; font-weight:800; }
+.notes { padding:5px 7px 9px; }
+.notes b { font-size:13px; }
+
+.logo-wrap {
+  width: 145px;
+  height: 85px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.pharmacy-logo {
+  width: 125px;
+  height: 78px;
+
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width:900px) {
+  .form-grid { grid-template-columns:repeat(2,1fr); }
+  .summary-cards { grid-template-columns:repeat(2,1fr); }
+}
+@page { size:A4 landscape; margin:6mm; }
+@media print {
+  body { background:#fff; }
+  .no-print { display:none !important; }
+  .page { max-width:none; margin:0; padding:0; }
+  .receipt { width:100%; border:1px solid #000; font-size:9px; }
+  .receipt-items th,.receipt-items td { font-size:8px; padding:2px 2px; }
+  .brand { min-height:70px; }
+  .brand { grid-template-columns:125px 1fr; }
+  .pharmacy-logo { width:108px; height:72px; object-fit:contain; }
+  .brand-name { font-size:13px; }
+  .receipt-title { font-size:12px; }
+  .footer-grid { min-height:75px; }
+}
+
+/* Receipt alignment refinements requested from reference print */
+.receipt {
+  font-weight: 600;
+}
+.receipt-items td,
+.amount-words,
+.gst-details td,
+.payment-table td,
+.footer-grid,
+.notes {
+  font-weight: 600;
+}
+
+/* Complete the payment section box just like the reference receipt */
+.payment-table {
+  border: 1px solid #222;
+  border-left: 0;
+}
+.payment-table th,
+.payment-table td {
+  font-weight: 700;
+}
+
+/* Keep the lower receipt area clearly boxed */
+.license-row {
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+.instructions {
+  border-bottom: 1px solid #222;
+  font-weight: 700;
+}
+.footer-grid {
+  border-bottom: 0;
+}
+.notes {
+  border-top: 0;
+}
+
+@media print {
+  .receipt {
+    font-weight: 600;
+  }
+  .payment-table {
+    border: 1px solid #000;
+    border-left: 0;
+  }
+}
+
+/* GST table: match the original receipt's grouped 3-level presentation */
+.gst-details thead tr:first-child th { text-align:center; font-weight:800; }
+.gst-details thead tr:nth-child(2) th { text-align:right; font-weight:800; }
+.gst-details .gst-grand-total td { font-weight:800; }
+
+/* Reference screenshot logo/header dimensions */
+.brand{min-height:82px!important;grid-template-columns:135px 1fr!important;}
+.logo-wrap{width:135px!important;height:82px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;}
+.pharmacy-logo{width:108px!important;height:72px!important;object-fit:contain!important;display:block!important;margin:0 auto!important;}
+@media print{
+  .brand{min-height:82px!important;grid-template-columns:135px 1fr!important;}
+  .logo-wrap{width:135px!important;height:82px!important;}
+  .pharmacy-logo{width:108px!important;height:72px!important;}
+}
